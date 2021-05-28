@@ -1,0 +1,7 @@
+<div class="card-deck my-5">
+  <div class="row mx-auto">
+    <div *ngFor="let mentorDetails of mentorList?.mentorSkillList">
+      <app-mentor-info [mentorDetails]="mentorDetails"></app-mentor-info>
+    </div>
+  </div>
+</div>

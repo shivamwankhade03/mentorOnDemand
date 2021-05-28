@@ -1,0 +1,54 @@
+<div class="card py-3 px-3">
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <h5 class="card-title">Name:{{mentorDetails.mentor.username}} </h5>
+        <h5 class="card-title">Linkedin: {{mentorDetails.mentor.linkedInUrl}}</h5>
+        <h5 class="card-title">Rating:{{mentorDetails.ratings}}</h5>
+        <h5 class="card-title">No. of Trainings: {{mentorDetails.yearsOfExperience}}</h5>
+        <div class="row">
+          <button type="button" class="btn btn-primary mx-3" (click)="viewDetails(mentorDetails.id)" data-toggle="modal"
+            data-target="#id">Show Details</button>
+          <button (click)="proposedRequest(mentorDetails.mentor.username)" class="btn btn-success float-right"
+            [disabled]="isDisabled">Propose</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="id" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <div class="card mx-auto">
+          <img class="card-img-top" src="assets/img/avatar_icon.png" width="275" height="250" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Name:{{mentorDetails.mentor.username}}</h5>
+            <p class="card-text">Technology Name</p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"> Name:{{mentorDetails.mentor.firstName}} {{mentorDetails.mentor.lastName}}</li>
+            <li class="list-group-item">Linkedin: {{mentorDetails.mentor.linkedInUrl}}</li>
+            <li class="list-group-item">Rating:{{mentorDetails.ratings}}</li>
+            <li class="list-group-item">No. of Trainings: {{mentorDetails.yearsOfExperience}}</li>
+            <li class="list-group-item">Fees : {{mentorDetails.fees}}</li>
+
+          </ul>
+
+        </div>
+      </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class=" btn btn-primary">Propose</button>
+
+        <button type="button" class=" btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,183 @@
+<!-- <div class="nav nav-tabs">
+            <a class="nav-item nav-link "  (click)="loadSearchComponent()" >Searching</a>
+            <a class="nav-item nav-link" (click)="loadCurrentTrainingComponent()">Current Training</a>
+            <a class="nav-item nav-link" (click)="loadCompletedTrainingComponent()">Completed Training</a>  
+                
+        </div> -->
+
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-proposals-tab" data-toggle="tab" href="#nav-proposals" role="tab"
+            aria-controls="nav-proposals" aria-selected="true" (click)="getPendingrequest()">Proposals</a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+            aria-controls="nav-profile" aria-selected="false" (click)="returnCurrentTrainingList()">Current Training</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+            aria-controls="nav-contact" aria-selected="false" (click)="returnCompletedTrainingList()">Completed
+            Training</a>
+        <a class="nav-item nav-link" id="nav-editSkills-tab" data-toggle="tab" href="#nav-editSkills" role="tab"
+            aria-controls="nav-editSkills" aria-selected="false">Add Skills</a>
+        <a class="nav-item nav-link" id="nav-trainerProfile-tab" data-toggle="tab" href="#nav-trainerProfile" role="tab"
+            aria-controls="nav-trainerProfile" aria-selected="false" (click)="showProfile()">Profile</a>
+
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-proposals" role="tabpanel" aria-labelledby="nav-proposals-tab">
+        <div class="alert alert-danger my-5 mx-5" *ngIf="errormsggetMentorPendingRequest">No pending Trainings Proposals
+        </div>
+        <div class="row" *ngIf="!errormsggetMentorPendingRequest">
+            <div class="col-4">
+                <div class="card px-3 mx-3 my-5" *ngFor="let pendingRequest of mentorPendingRequest">
+                    <!-- {{pendingRequest | json}} -->
+                    <div class="card-body">
+                        <h5 class="card-title">user Name :{{pendingRequest.userFirstName}}
+                            {{pendingRequest.userLastName}}</h5>
+                        <h5 class="card-title">Skill Name :{{pendingRequest.skillName}}</h5>
+                    </div>
+                    <div class="card-footer">
+                        <button (click)="acceptProposal(pendingRequest.userName,pendingRequest.skillName)"
+                            class="btn btn-success ">Accept</button> &nbsp;
+                        <button (click)="rejectProposal(pendingRequest.userName,pendingRequest.skillName)"
+                            class="btn btn-danger ">Reject</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <div class="alert alert-danger my-5 mx-5" *ngIf="errormsgCurrentTraining">No More Undergoing Trainings </div>
+        <div *ngIf="!errormsgCurrentTraining">
+            <div class="card px-3 mx-3 my-5" *ngFor="let currentTraining of currentTrainingList">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h5 class="card-title">user Name
+                                :{{currentTraining.userFirstName}}{{currentTraining.userLastName}}</h5>
+                            <h5 class="card-title">Skill Name :{{currentTraining.skillName}}</h5>
+                            <h5 class="card-title">Start date : {{currentTraining.startDate}}</h5>
+                            <h5 class="card-title">End date :{{currentTraining.endDate}}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+        <div class="alert alert-danger my-5 mx-5" *ngIf="errormsgCompletedTraining">No Completed Trainings are available
+        </div>
+        <div *ngIf="!errormsgCompletedTraining">
+            <div class="card px-3 mx-3 my-5" *ngFor="let completedTraining of completedTrainingList">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h5 class="card-title">user Name :{{completedTraining.userFirstName}}
+                                {{completedTraining.userLastName}}</h5>
+                            <h5 class="card-title">Skill Name :{{completedTraining.skillName}}</h5>
+                            <h5 class="card-title">Start date : {{completedTraining.startDate}}</h5>
+                            <h5 class="card-title">End date :{{completedTraining.endDate}}</h5>
+                        </div>
+                        <div class="col-6">
+                            <div class="circle-wrap">
+                                <h3>PROGRESS</h3>
+                                <div class="circle">
+                                    <div class="mask full">
+                                        <div class="fill"></div>
+                                    </div>
+                                    <div class="mask half">
+                                        <div class="fill"></div>
+                                    </div>
+                                    <div class="inside-circle">
+                                        100%
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade " id="nav-editSkills" role="tabpanel" aria-labelledby="nav-editSkills-tab">
+        <h3 class="container mt-5">Update your Skill Profile </h3>
+        <div class="alert alert-danger my-5 mx-5" *ngIf="saveEditError">Skill is already registered with this mentor
+        </div>
+        <div class="alert alert-success my-5 mx-5" *ngIf="saveEditboolean">Skill added
+        </div>
+
+
+        <div class="container">
+            <form [formGroup]="editForm" (submit)="saveEditeDetails(editForm.value)">
+                <div class="row mt-5 ml-5 mr-5">
+                    <div class="col-12">
+                        <label for="yearsOfExperience">Years of Experience</label>
+                        <input type="text" class="form-control" placeholder="Enter years of experience"
+                            formControlName="yearsOfExperience" id="yearsOfExperience" required>
+                        <div class="text-danger"
+                            *ngIf="yearsOfExperience.touched && yearsOfExperience.invalid && yearsOfExperience.errors.required">
+                            Years of Experience is
+                            required
+                        </div>
+                        <div class="text-danger"
+                            *ngIf="yearsOfExperience.touched && yearsOfExperience.invalid && yearsOfExperience.errors.pattern">
+                            Invalid
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 ml-5 mr-5">
+                    <div class="col-12">
+                        <label for="fees">Fees</label>
+                        <input type="text" class="form-control" placeholder="Enter fees" formControlName="fees"
+                            id="fees" required>
+                        <div class="text-danger" *ngIf="fees.touched && fees.invalid && fees.errors.required">Fees is
+                            required
+                        </div>
+                        <div class="text-danger" *ngIf="fees.touched && fees.invalid && fees.errors.pattern">Invalid
+                            fees
+                        </div>
+                    </div>
+                </div>
+                <div class="row ml-5 mr-5">
+                    <div class="col-12 mt-5">
+                        <label for="skillType">Courses</label>
+                        <select id="skillType" formControlName="skillType" class="custom-select"
+                            [class.is-invalid]="changeType || (skillType.touched && skillType.pristine)"
+                            (change)="changeskillType($event)">
+
+                            <option *ngFor="let type of skills" [ngValue]="type">{{type}}</option>
+                        </select>
+                        <small class="text text-danger"
+                            [class.d-none]="!changeType  && (skillType.untouched || skillType.dirty)">Please select a
+                            course</small>
+                    </div>
+                </div>
+                <div class="row mt-5 ml-5 mr-5 mb-5">
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-primary text-light "
+                            [disabled]="(!editForm.valid)">Save</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <div class="tab-pane fade " id="nav-trainerProfile" role="tabpanel" aria-labelledby="nav-trainerProfile-tab">
+        <div class="row  container mx-auto" *ngIf="this.mentor">
+            <div class=" col-md-6 img mx-auto">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAe1BMVEX///8AAABWVlZgYGDb29v19fX6+vri4uL7+/uurq7t7e3j4+N+fn5ISEjm5uaioqLFxcW8vLw9PT21tbVycnJ7e3uLi4vPz8+pqamFhYUhISEYGBjAwMDLy8tAQEBTU1NsbGw1NTUQEBBkZGSYmJgeHh4qKiqampotLS3IyMT7AAAEwklEQVR4nO3diX6iMBAHYKKIUu8LrWdbe+z7P+EutdVaEkjCjDNh53uC/H9iJidEkRBCCCGEEEIIIYQQQgghhBBCCCGEEEIIH0k/nkzn890+7nao2wKtF6eDg7pxfJx3qZsFpZO2lEE7faBuXW2d9cEU7+yQJtRtrKP7VB7vbBFTt9NXfLTJlxuuqNvqY2T89+kcw+t2Bi75co/ULXYzcc2X21G32sHSJ+C/Loe63bZG734BlXobUbfdys43Xy6EJ3VcJ6BSY+r2V8rqBVQqo05QwbOP+Yl32XisH5D3r/gKEZDzf3ENE1CpCXUSgxVUQKV41sUHuIBqQx1Gq2Kq62ZJnUYDqJf5xm9w04UNqBR1oALv0bYJt8IPViiueM36E/iA6kgd6kbt8bYOp+WpDkZAVj8iyk+oFKN1VJyA6ok610WKlFCx2aKaYSVcUyf7Aj6cuThQR/uC1M/kmGy+bfAS8nhMR3gBVZs63CeEIekVdbhPJ8yELIr+C2bClDpdBLs8U8RhNcNrq9DakDpeVHsnpgp1vAhkp6JMjzpfFLVxEzLoTJ9xEzKY6OMG5LCFgZxwTp0PPSGDsTdyQgZ7iZKwJgZPKfiGxa0pdb4osj5i6YdBPUSdHrIY04AcMDFjcEYadRGDxdyi+fND3Dn+gDpeDnWdhsGwFLkz7VOny6EuY1CH+4S3McPm5DdiQgZjtpzz1Qp7DOp9DvBM4i8n6mjf0OoFg0Wasw+shNTBLrCGNR/Uwa4WOAnZHMXAKomsTieijNwY/YQ4e/nMrl0gzPQZ7DrdAA/IZMB2NQUOyGFy/wvwPiKT01A/wR6EZveM5iAH4CyWZ4rgJvsz6igmUIO3Lataf8PpNQpmPG+unYHc7uJ1leQ3gAPRDPZiSg2b/Qvm6nU3G76dzFWdonFksrhWwb/0M5swmXU8qwaDHW1rc498A24TwnKJ66HMIfciUdR3mU69s1n7dRLbZpyxnCtZ6dps2pxC6mA0puUvpWulIZT4KqtMP1rdLqZNiHeWrNaD1mz7FW0zbGfrVXPS/dRLkiSssieEEEIIIYRA8xBP0vFrtlyc2vdxWiyz1/F8H+OvF3fidIn2MhorrWyKt/e2N0zV7681RjjgPrH6BsD9vGege1RWS2Z3NwP7bsSu9pYgmgHEf3L+Rh2j1Kluxv0f6giVlnWe1Q7yGyGA+F8V9tkiI3H0OwTXQ77+Cspna6eLeukOnPsFqVqfcKAwc9wkCOYveOV2TgXtZZaYXhz6myADukTEvZ2NaGtZ/GPqhvqzPHkbVpm4ZVU0gE7BErF4C2GgvcxF5VwD9w0Jd1D5VwxpMKpX8ZzuqdsHoLxkPFM3D0DpxUzo61k0yoY2z9SNA1FypagJ/8KceZYRxrJMNeNb7IKvhd+MX4tCfl/uHZlOrPJd23ZlKBg4n1KhoU8Y4NqMkf7gP9LLLUjoe1PEjzjcXUsXsDG1IveiSxjs+pOWbiLcnGqY031csEkdjf71RM2p9zndoht1m2DpvtlG3SZYms60SWO2XDFhn7pJwIoJA96t0CrO85uWsFjym5aweOytaQmL8ydJGBpJGD5JGD5JGD5JGD5JGD5JGD5JGL7/MWF/2GqSIYtP8AghRFP8BcMFahF2rSIuAAAAAElFTkSuQmCC"
+                    alt="" class="img-rounded">
+                <!-- </div> -->
+                <!-- <div class="col-md-6 details"> -->
+                <h3> {{mentor.userName}} </h3>
+                <p>
+                    Contact : {{mentor.contactNumber}} <br>
+                    LinkedIn Url : {{mentor.linkedInUrl}} <br>
+                    Registration Date : {{mentor.registrationDate}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="row pb-5">
+    <div class="col-xs-11 mt-5 ml-5 mr-5 mb-5 mx-auto">
+        <div class="card mt-5 shadow">
+            <h1 class="mt-5 ml-5">Login</h1>
+
+
+            <div class="alert alert-danger ml-5 mr-5" *ngIf="this.authService.isLoggedInValid">Invalid Username /
+                Password</div>
+            <form [formGroup]="loginForm" (submit)="this.authService.authenticateUser(loginForm.value)">
+                <div class="row mt-5 ml-5 mr-5">
+                    <div class="col-12">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" placeholder="Enter Username" formControlName="username"
+                            id="username" required>
+                        <div class="text-danger"
+                            *ngIf="username.touched && username.invalid && username.errors.required">Username is
+                            required</div>
+                    </div>
+                </div>
+                <div class="row ml-5 mr-5">
+                    <div class="col-12 mt-5">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" placeholder="Enter Password"
+                            formControlName="password" id="password" required>
+                        <div class="text-danger"
+                            *ngIf="password.touched && password.invalid && password.errors.required">Password is
+                            required</div>
+                    </div>
+                </div>
+
+
+
+                <div class="row ml-5 mr-5">
+                    <div class="col-12 mt-5">
+                        <label for="userType">User Type</label>
+                        <select id="userType" formControlName="userType" class="custom-select"
+                            [class.is-invalid]="changeType || (userType.touched && userType.pristine)"
+                            (change)="changeUserType($event)">
+
+                            <option *ngFor="let type of cate" [ngValue]="type">{{type}}</option>
+                        </select>
+                        <small class="text text-danger"
+                            [class.d-none]="!changeType  && (userType.untouched || userType.dirty)">User type is
+                            required</small>
+                    </div>
+                </div>
+                <div class="row mt-5 ml-5 mr-5 mb-5">
+                    <div class="col-6">
+                        <button type="submit" class="btn buttonColor text-light"
+                            [disabled]="!loginForm.valid">Login</button>
+                    </div>
+                    <div class="col">
+                        <div>
+                            New Here? <a class="text-primary " (click)="toSignup()">Signup</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </form>
+        </div>
+    </div>
+</div>

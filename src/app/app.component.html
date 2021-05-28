@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-sm navbar-dark text-light navbar_top">
+    <h2>
+        <i class="material-icons">
+            school
+        </i> Mentor on Demand
+    </h2>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse " id="navbarSupportedContent1">
+        <ul class="navbar-nav  ml-auto bg-dark">
+            <li class="nav-item active" *ngIf="this.authService.loggedIn">
+                <i class="material-icons other_icon">person </i> {{this.authService.username}}
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="login" *ngIf="this.authService.loggedIn" (click)="logout()">Logout</a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="login" *ngIf="!this.authService.loggedIn">Login</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="signup" *ngIf="!this.authService.loggedIn">Signup</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div *ngIf="showLoadingIndicator" class="spinner"></div>
+<router-outlet></router-outlet>
+
+
+
+<nav class="navbar navbar-expand-sm navbar-dark text-light navbar_bottom">
+    Copyright 2019
+</nav>

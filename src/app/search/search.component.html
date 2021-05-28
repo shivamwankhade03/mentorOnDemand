@@ -1,0 +1,31 @@
+<section class="bg-light mt-5">
+        <div class="container mt-5">
+                <div class="row">
+                        <div class="col-lg-6 order-2 order-lg-1">
+                                <h1 class="mt-5">MENTOR ON DEMAND</h1>
+                                <p class="lead"> Improve your knowledge with the help of professional trainers </p>
+                                <p> Login and have fun with learning.......... </p>
+                        </div>
+                        <div class="col-lg-6 order-1 order-lg-2"><img
+                                        src="https://3.bp.blogspot.com/-_7vaKiNZPXk/XCWoF-0xj7I/AAAAAAAAAMk/Bx7Ne5WLEvINHPDoG1jwY6rGO2d62pprwCKgBGAs/s1600/ux-design.jpeg"
+                                        class="img-fluid"></div>
+                </div>
+        </div>
+</section>
+
+<div class="px-2 py-2 row">
+        <div class="col-2"></div>
+        <div class="col-8">
+        
+        <label>Search course </label>
+        <div>
+                <input [(ngModel)]="course" placeholder="Enter course Name " class=" col-lg-6" /><span class="px-3 ">
+                        <button class="btn btn-primary" type="button"
+                                (click)="searchCourse(course)">Search</button></span>
+        </div>
+</div>
+        <div class="col-2"></div>
+        
+</div>
+
+<app-mentor></app-mentor>

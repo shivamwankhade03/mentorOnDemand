@@ -1,0 +1,144 @@
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+      aria-controls="nav-home" aria-selected="true">Searching</a>
+    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+      aria-controls="nav-profile" (click)="returnCurrentTrainingList()" aria-selected="false">Current Training</a>
+    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+      aria-controls="nav-contact" (click)="returnCompletedTrainingList()" aria-selected="false">Completed Training</a>
+    <a class="nav-item nav-link" id="nav-proposed-tab" data-toggle="tab" href="#nav-proposed" role="tab"
+      aria-controls="nav-proposed" (click)="returnProposedTraining()" aria-selected="false">Proposed Training</a>
+
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+    <app-search></app-search>
+  </div>
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+    <div class="alert alert-danger my-5 mx-5" *ngIf="errormsgCurrentTraining">No Current Trainings</div>
+    <div *ngIf="!errormsgCurrentTraining">
+      <div class="card my-5" *ngFor="let currentTraining of currentTrainingList">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <h5 class="card-title">Skill Name :{{currentTraining.skillName}}</h5>
+              <h5 class="card-title">Rating :{{currentTraining.ratings}}</h5>
+              <h5 class="card-title">Fees :{{currentTraining.fees}}</h5>
+
+              <h5 class="card-title">Start date : {{currentTraining.startDate}}</h5>
+              <h5 class="card-title">End date :{{currentTraining.endDate}}</h5>
+              <h5 class="card-title">Progress percentage :{{currentTraining.progressPercentage}}%</h5>
+            </div>
+            <div class="col-6">
+              <h2>PROGRESS</h2>
+              <circle-progress [percent]="currentTraining.progressPercentage" [radius]="100" [outerStrokeWidth]="16"
+                [innerStrokeWidth]="8" [outerStrokeColor]="'#78C000'" [innerStrokeColor]="'#C7E596'" [animation]="true"
+                [animationDuration]="300"></circle-progress>
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+    <div class="alert alert-danger my-5 mx-5" *ngIf="errormsgCompletedTraining">No Completed Trainings</div>
+    <div *ngIf="!errormsgCompletedTraining">
+      <div class="card  mx-3 px-3 my-5" *ngFor="let completedTraining of completedTrainingList">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <h5 class="card-title">Trainer Name :{{completedTraining.mentorFirstName}}
+                {{completedTraining.mentorLastName}}</h5>
+              <h5 class="card-title">Skill Name :{{completedTraining.skillName}}</h5>
+              <h5 class="card-title">Rating :{{completedTraining.ratings}}</h5>
+              <h5 class="card-title">Fees :{{completedTraining.fees}}</h5>
+              <h5 class="card-title">Start date : {{completedTraining.startDate}}</h5>
+              <h5 class="card-title">End date :{{completedTraining.endDate}}</h5>
+              <div class="alert alert-success my-5 mx-5" *ngIf="!rating"> rated successfully</div>
+              <input type="text" name="rating" placeholder="give 1 to 5" #rating><button
+                (click)="rate(completedTraining.mentorUserName,rating.value,completedTraining.skillName)"> rate
+              </button>
+            </div>
+            <div class="col-6">
+              <div class="circle-wrap">
+                <h3>PROGRESS</h3>
+                <div class="circle">
+                  <div class="mask full">
+                    <div class="fill"></div>
+                  </div>
+                  <div class="mask half">
+                    <div class="fill"></div>
+                  </div>
+                  <div class="inside-circle">
+                    100%
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="tab-pane fade" id="nav-proposed" role="tabpanel" aria-labelledby="nav-proposed-tab">
+    <div class="alert alert-danger my-5 mx-5" *ngIf="errormsgProposedTraining">No Proposed Trainings</div>
+    <div class="row" *ngIf="!errormsgProposedTraining">
+      <div class="card px-3 mx-3 my-5 " *ngFor="let proposedRequest of propposedTrainingList">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-8 ">
+              <h5 class="card-body">Trainer Name
+                :{{proposedRequest.mentorFirstName}}{{proposedRequest.mentorLastName}}</h5>
+              <h5 class="card-body">Skill Name :{{proposedRequest.skillName}}</h5>
+              <h5 class="card-body">Rating :{{proposedRequest.ratings}}</h5>
+              <h5 class="card-body">Fees :{{proposedRequest.fees}}</h5>
+            </div>
+          </div>
+          <div class="row">
+            <h4 class="text-danger">Request is not yet accepted </h4>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="card my-5" *ngFor="let approvedTraining of approvedTrainingList">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-8">
+            <h5 class="card-title">Trainer Name :{{approvedTraining.mentorFirstName}}
+              {{approvedTraining.mentorLastName}}</h5>
+            <h5 class="card-title">Skill Name :{{approvedTraining.skillName}}</h5>
+            <h5 class="card-title">Rating :{{approvedTraining.ratings}}</h5>
+            <h5 class="card-title">Fees :{{approvedTraining.fees}}</h5>
+
+            <h5 class="card-title">Year of experience :{{approvedTraining.yearsOfExperience}}</h5>
+            <h5 class="card-title">Training delivered :{{approvedTraining.trainingsDeliverd}}</h5>
+          </div>
+
+          <div>
+            <button (click)="acceptTraining(approvedTraining.mentorUserName,approvedTraining.skillName)"
+              class="btn btn-success float-right">Finalize</button>
+          </div>
+          <div>
+            <button (click)="cancelTraining(approvedTraining.mentorUserName,approvedTraining.skillName)"
+              class="btn btn-danger float-right">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
